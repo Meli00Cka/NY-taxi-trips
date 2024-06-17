@@ -1,0 +1,13 @@
+[theme]
+base = "dark"
+font = "sans serif"
+
+# primaryColor = "#FFC107" # Bright yellow
+# backgroundColor = "#212121" # Dark gray
+# secondaryBackgroundColor = "#424242" # Slightly lighter gray
+# textColor = "#FFFFFF" # White
+
+primaryColor = "#B09311" # Bright yellow
+backgroundColor = "#222222" # Dark gray
+secondaryBackgroundColor = "#2a2a2a" # Slightly lighter gray
+textColor = "#FFFFFF" # White
