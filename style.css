@@ -1,8 +1,8 @@
 .stApp {
   /* background: rgb(255,231,0);
-  background: linear-gradient(180deg, rgba(255,231,0,1) 0%, rgba(55,43,0,1) 100%);   */
+  background: linear-gradient(180deg, rgba(255,231,0,1) 0%, rgba(55,43,0,1) 100%);*/
   background: #756529;
-  background: radial-gradient(circle, #756529 0%, #e6cf00 90%);
+  background: radial-gradient(circle, #9e7a25 0%, #dfa41a 90%);
 }
 
 /* *{
