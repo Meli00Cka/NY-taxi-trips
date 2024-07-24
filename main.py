@@ -69,3 +69,45 @@ with st.expander(label="",expanded=show_analysis):
                     st.write("You can use the tools on the plot to take a closer look if you wish,\n\nOr look up other zones with the tool I put in _left sidebar_.")
                 else:
                     st.write(f"<br><br><br><br><br>{plot_caption[i]}",unsafe_allow_html=True)
+
+
+st.header("Predict")
+with st.expander(label="",expanded=show_predict):
+    _,col5, _ = st.columns([1.5,5,1.5])
+    col5.markdown("""
+To predict the __fare amount__ I decided to try these models:
+- Gradient Boosting 
+- Random Forest 
+- Decision Tree 
+- Linear Regression 
+
+And used RandomizedSearchCV to find the best parameters for each model.
+
+The dataset is noisy and this makes it hard to predict or get high accuracy from models.
+
+##### Here's the results:
+
+The best model for this dataset is __Random Forest__.
+
+
+---
+
+""")
+    cap_tmplt = "The best Parameters I found for this specific model and dataset:"
+    model_plot_caption = {
+        1:f"#### Gradient Boosting\n\n{cap_tmplt}\n\n- learning_rate = 0.2\n\n- n_estimators = 100\n\n- max_depth = 30"+"\n\n##### Scores:\n\n- RMSE: 14.41\n\n- MSE: 207.60\n\n- MAE: 7.76\n\n- R2: 0.14",
+        2:f"#### Random Forest\n\n{cap_tmplt}\n\nn_estimators = 380\n\nmax_features = 'sqrt'\n\nmax_depth = 80\n\nmin_samples_split = 40\n\nmin_samples_leaf = 15\n\nbootstrap = True\n\nn_jobs = -6 (to use less hardware's potential)" + "\n\n##### Scores:\n\n- RMSE: 12.13\n\n- MSE: 147.13\n\n- MAE: 6.96\n\n- R2: 0.39",
+        3:f"#### Decision Tree\n\n{cap_tmplt}\n\nmax_leaf_nodes = 660\n\nmax_features= sqrt\n\nmax_depth= 78\n\n"+"\n\n##### Scores:\n\n- RMSE: 13.00\n\n- MSE: 169.09\n\n- MAE: 7.41\n\n- R2: 0.30",
+        4:f"#### Linear Regression\n\n{cap_tmplt}\n\n- positive = False\n\n- fit_intercept = False\n\n"+"\n\n##### Scores:\n\n- RMSE: 13.55\n\n- MSE: 183.61\n\n- MAE: 7.76\n\n- R2: 0.24",
+    }
+    for i in range(1,5):
+        col3, col4 = st.columns([5.3,4])
+    
+        with open(f"./plots/p_m{i}.html", "r") as f:
+            st.markdown("---")
+            ## plots[f"p{i}"] = f.read() # to save plots in a dict
+            with col3:
+                pass
+                st.components.v1.html(f.read(),height=620, width=820)
+            with col4:
+                st.markdown(model_plot_caption[i])
