@@ -9,6 +9,5 @@ def local_css(file_name):
 
 
 @st.cache_data
-def load_data():
-    data = pd.read_csv("./data/taxi_trips.csv", low_memory=False)
-    return data.drop(data.index[11916662:])
+def load_data(path="./data/dataset_sample.csv"):
+    return pd.read_csv(path)
