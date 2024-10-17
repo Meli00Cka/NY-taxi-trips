@@ -39,7 +39,8 @@ if __name__ == "__main__":
             st.link_button("Dataset Source","https://www.kaggle.com/datasets/anandshaw2001/taxi-dataset",use_container_width=True,help="For more details")
         
         st.write(data[selected_col].head(8))
-
+        
+        st.write('##### Extra columns after data preprocessing:\n\n'+'pickup_date, pickup_month, pickup_day, pickup_hour, estimated_duration, trip_duration, pickup_week_day, is_weekend, is_holiday\n\nborough, transaction_frequency, temperature_2m (°C), cloudcover (%), rain (mm), windspeed_10m (km/h), precipitation (mm")')
 
     st.header("Analysis")
     with st.expander(label="",expanded=show_analysis):
@@ -73,9 +74,13 @@ if __name__ == "__main__":
 
     st.header("Predict")
     with st.expander(label="",expanded=show_predict):
-        _,col5, _ = st.columns([1.5,5,1.5])
-        col5.markdown("""
-    To predict the __fare amount__ I decided to try these models:
+        cap_tmplt = "The best Parameters I found for this specific model and dataset:"     
+        
+        tab1, tab2= st.tabs(["Fare Amount", "Trip Duration"])
+        with tab1:        
+            _,col5, _ = st.columns([1.5,5,1.5])
+            col5.markdown("""
+    To predict the __<span class='header-size'>Fare Amount</span>__ I decided to try these models:
     - Gradient Boosting 
     - Random Forest 
     - Decision Tree 
@@ -92,23 +97,88 @@ if __name__ == "__main__":
 
     ---
 
-    """)
-        cap_tmplt = "The best Parameters I found for this specific model and dataset:"
-        model_plot_caption = {
-            1:f"#### Gradient Boosting\n\n{cap_tmplt}\n\n- learning_rate = 0.2\n\n- n_estimators = 100\n\n- max_depth = 30"+"\n\n##### Scores:\n\n- RMSE: 14.41\n\n- MSE: 207.60\n\n- MAE: 7.76\n\n- R2: 0.14",
-            2:f"#### Random Forest\n\n{cap_tmplt}\n\nn_estimators = 380\n\nmax_features = 'sqrt'\n\nmax_depth = 80\n\nmin_samples_split = 40\n\nmin_samples_leaf = 15\n\nbootstrap = True\n\nn_jobs = -6 (to use less hardware's potential)" + "\n\n##### Scores:\n\n- RMSE: 12.13\n\n- MSE: 147.13\n\n- MAE: 6.96\n\n- R2: 0.39",
-            3:f"#### Decision Tree\n\n{cap_tmplt}\n\nmax_leaf_nodes = 660\n\nmax_features= sqrt\n\nmax_depth= 78\n\n"+"\n\n##### Scores:\n\n- RMSE: 13.00\n\n- MSE: 169.09\n\n- MAE: 7.41\n\n- R2: 0.30",
-            4:f"#### Linear Regression\n\n{cap_tmplt}\n\n- positive = False\n\n- fit_intercept = False\n\n"+"\n\n##### Scores:\n\n- RMSE: 13.55\n\n- MSE: 183.61\n\n- MAE: 7.76\n\n- R2: 0.24",
-        }
-        for i in range(1,5):
-            col3, col4 = st.columns([5.3,4])
+            """, unsafe_allow_html=True)
+            model_plot_caption = {
+                1:f"#### Gradient Boosting\n\n---\n\n{cap_tmplt}\n\n- learning_rate = 0.2\n\n- n_estimators = 100\n\n- max_depth = 30" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 14.41\n\n- MSE: 207.60\n\n- MAE: 7.76\n\n- R2: 0.14",
+                2:f"#### Random Forest\n\n---\n\n{cap_tmplt}\n\n- n_estimators = 380\n\n- max_features = 'sqrt'\n\n- max_depth = 80\n\n- min_samples_split = 40\n\n- min_samples_leaf = 15\n\n- bootstrap = True\n\n- n_jobs = -6 (to use less hardware's potential)" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 12.13\n\n- MSE: 147.13\n\n- MAE: 6.96\n\n- R2: 0.39",
+                3:f"#### Decision Tree\n\n---\n\n{cap_tmplt}\n\n- max_leaf_nodes = 660\n\n- max_features= sqrt\n\n- max_depth= 78\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 13.00\n\n- MSE: 169.09\n\n- MAE: 7.41\n\n- R2: 0.30",
+                4:f"#### Linear Regression\n\n---\n\n{cap_tmplt}\n\n- positive = False\n\n- fit_intercept = False\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 13.55\n\n- MSE: 183.61\n\n- MAE: 7.76\n\n- R2: 0.24",
+            }
+            for i in range(1,5):
+                col3, col4, _ = st.columns([5.3,3,1.3])
+
+                # with open(f"./plots/p_m{i}.png", "r") as f:
+                st.markdown("---")
+                ## plots[f"p{i}"] = f.read() # to save plots in a dict
+                with col3:
+                    pass
+                    # st.components.v1.html(f.read(),height=620, width=820)
+                    st.image(f"./plots/p_m{i}_fa.png")
+                with col4:
+                    st.markdown(model_plot_caption[i])
         
-            # with open(f"./plots/p_m{i}.png", "r") as f:
-            st.markdown("---")
-            ## plots[f"p{i}"] = f.read() # to save plots in a dict
-            with col3:
-                pass
-                # st.components.v1.html(f.read(),height=620, width=820)
-                st.image(f"./plots/p_m{i}.png")
-            with col4:
-                st.markdown(model_plot_caption[i])
+        
+        with tab2:
+            _,col6, _ = st.columns([1.5,5,1.5])
+            col6.markdown("""
+    To predict the __<span class='header-size'>Trip Duration</span>__ I decided to try these models:
+    - Deep learning model 
+    - Gradient Boosting 
+    - Random Forest 
+    - Decision Tree 
+    - Linear Regression 
+
+    To find the best parameters for each model I used GridSearchCV and RandomizedSearchCV.
+
+    ##### Results:
+
+    The best model for this dataset is __Random Forest__.
+
+    ---
+
+            """, unsafe_allow_html=True)
+            
+            model_plot_caption = {
+                1:f"#### Deep Learning\n\n---\n\n",
+                2:f"#### Gradient Boosting\n\n---\n\n{cap_tmplt}\n\n- learning_rate = 0.03\n\n- n_estimators = 80\n\n- max_depth = 20" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 16.306\n\n- MSE: 265.887\n\n- MAE: 6.366\n\n- R2: 0.075",
+                3:f"#### Random Forest\n\n---\n\n{cap_tmplt}\n\n- n_estimators = 786\n\n- min_samples_split = 9\n\n- min_samples_leaf = 15\n\n- max_features = 'sqrt'\n\n- max_depth = 113\n\n- bootstrap = True\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 14.435\n\n- MSE: 208.369\n\n- MAE: 5.657\n\n- R2: 0.275",
+                4:f"#### Decision Tree\n\n---\n\n{cap_tmplt}\n\n- max_leaf_nodes = 509\n\n- max_features = 'log2'\n\n- max_depth= 104\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 15.377\n\n- MSE: 236.454\n\n- MAE: 6.121\n\n- R2: 0.177",
+                5:f"#### Linear Regression\n\n---\n\n{cap_tmplt}\n\n- positive = True\n\n- fit_intercept = False\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 16.593\n\n- MSE: 275.352\n\n- MAE: 8.503\n\n- R2: 0.042",
+            }
+            for i in range(1,6):
+                col3, col4, _ = st.columns([5.3,3,1.3])
+
+                # with open(f"./plots/p_m{i}.png", "r") as f:
+                st.markdown("---")
+                ## plots[f"p{i}"] = f.read() # to save plots in a dict
+                with col3:
+                    pass
+                    # st.components.v1.html(f.read(),height=620, width=820)
+                    st.image(f"./plots/p_m{i}_td.png")
+                with col4:
+                    st.markdown(model_plot_caption[i])
+                    if i == 1:
+                        tab3, tab4 = st.tabs(['Parameters & Scores','Architecture'])
+                        tab3.markdown("- validation_split = 0.05\n\n- epochs = 5000\n\n- batch_size = 130000\n\n- verbose = 2 (Less detailed or no verbose/log can speed up training time)\n\n- callbacks = [EarlyStopping(monitor='val_loss', patience=40, restore_best_weights=True)]" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 14.512\n\n- MSE: 210.620\n\n- MAE: 5.785\n\n- R2: 0.267")
+                        tab4.code("""
+                            input_shape = X_train.shape[1]
+                            model = Sequential([
+                                Input(shape=(input_shape,)),
+                                Reshape((1, input_shape)),
+
+                                LSTM(32, return_sequences=True, kernel_regularizer=l1_l2(0.01)),
+                                Dropout(0.25),
+
+                                LSTM(32, return_sequences=True, kernel_regularizer=l1_l2(0.01)),
+                                Dropout(0.25),
+
+                                LSTM(64, return_sequences=True, kernel_regularizer=l1_l2(0.01)),
+
+                                LSTM(32, return_sequences=True, kernel_regularizer=l1_l2(0.01)),
+                                Dropout(0.25),
+
+                                Dense(16, activation='selu'),
+                                Dense(1)
+                            ])
+                            model.compile(optimizer='Adam', loss='mse', metrics=['mae'])
+                        """)
