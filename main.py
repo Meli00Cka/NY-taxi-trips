@@ -4,7 +4,7 @@ import pandas as pd
 
 if __name__ == "__main__":
     st.set_page_config(
-        initial_sidebar_state="collapsed",menu_items=None,
+        initial_sidebar_state='expanded',menu_items=None,
         page_icon="./img/taxi_logo.png",layout="wide",
         page_title="NY Taxi trips"
     )
@@ -76,49 +76,9 @@ if __name__ == "__main__":
     with st.expander(label="",expanded=show_predict):
         cap_tmplt = "The best Parameters I found for this specific model and dataset:"     
         
-        tab1, tab2= st.tabs(["Fare Amount", "Trip Duration"])
-        with tab1:        
-            _,col5, _ = st.columns([1.5,5,1.5])
-            col5.markdown("""
-    To predict the __<span class='header-size'>Fare Amount</span>__ I decided to try these models:
-    - Gradient Boosting 
-    - Random Forest 
-    - Decision Tree 
-    - Linear Regression 
-
-    And used RandomizedSearchCV to find the best parameters for each model.
-
-    The dataset is noisy and this makes it hard to predict or get high accuracy from models.
-
-    ##### Here's the results:
-
-    The best model for this dataset is __Random Forest__.
-
-
-    ---
-
-            """, unsafe_allow_html=True)
-            model_plot_caption = {
-                1:f"#### Gradient Boosting\n\n---\n\n{cap_tmplt}\n\n- learning_rate = 0.2\n\n- n_estimators = 100\n\n- max_depth = 30" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 14.41\n\n- MSE: 207.60\n\n- MAE: 7.76\n\n- R2: 0.14",
-                2:f"#### Random Forest\n\n---\n\n{cap_tmplt}\n\n- n_estimators = 380\n\n- max_features = 'sqrt'\n\n- max_depth = 80\n\n- min_samples_split = 40\n\n- min_samples_leaf = 15\n\n- bootstrap = True\n\n- n_jobs = -6 (to use less hardware's potential)" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 12.13\n\n- MSE: 147.13\n\n- MAE: 6.96\n\n- R2: 0.39",
-                3:f"#### Decision Tree\n\n---\n\n{cap_tmplt}\n\n- max_leaf_nodes = 660\n\n- max_features= sqrt\n\n- max_depth= 78\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 13.00\n\n- MSE: 169.09\n\n- MAE: 7.41\n\n- R2: 0.30",
-                4:f"#### Linear Regression\n\n---\n\n{cap_tmplt}\n\n- positive = False\n\n- fit_intercept = False\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 13.55\n\n- MSE: 183.61\n\n- MAE: 7.76\n\n- R2: 0.24",
-            }
-            for i in range(1,5):
-                col3, col4, _ = st.columns([5.3,3,1.3])
-
-                # with open(f"./plots/p_m{i}.png", "r") as f:
-                st.markdown("---")
-                ## plots[f"p{i}"] = f.read() # to save plots in a dict
-                with col3:
-                    pass
-                    # st.components.v1.html(f.read(),height=620, width=820)
-                    st.image(f"./plots/p_m{i}_fa.png")
-                with col4:
-                    st.markdown(model_plot_caption[i])
+        tab1, tab2= st.tabs(["Trip Duration", "Fare Amount"])
         
-        
-        with tab2:
+        with tab1:
             _,col6, _ = st.columns([1.5,5,1.5])
             col6.markdown("""
     To predict the __<span class='header-size'>Trip Duration</span>__ I decided to try these models:
@@ -182,3 +142,43 @@ if __name__ == "__main__":
                             ])
                             model.compile(optimizer='Adam', loss='mse', metrics=['mae'])
                         """)
+        with tab2:        
+            _,col5, _ = st.columns([1.5,5,1.5])
+            col5.markdown("""
+    To predict the __<span class='header-size'>Fare Amount</span>__ I decided to try these models:
+    - Gradient Boosting 
+    - Random Forest 
+    - Decision Tree 
+    - Linear Regression 
+
+    And used RandomizedSearchCV to find the best parameters for each model.
+
+    The dataset is noisy and this makes it hard to predict or get high accuracy from models.
+
+    ##### Here's the results:
+
+    The best model for this dataset is __Random Forest__.
+
+
+    ---
+
+            """, unsafe_allow_html=True)
+            model_plot_caption = {
+                1:f"#### Gradient Boosting\n\n---\n\n{cap_tmplt}\n\n- learning_rate = 0.2\n\n- n_estimators = 100\n\n- max_depth = 30" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 14.41\n\n- MSE: 207.60\n\n- MAE: 7.76\n\n- R2: 0.14",
+                2:f"#### Random Forest\n\n---\n\n{cap_tmplt}\n\n- n_estimators = 380\n\n- max_features = 'sqrt'\n\n- max_depth = 80\n\n- min_samples_split = 40\n\n- min_samples_leaf = 15\n\n- bootstrap = True\n\n- n_jobs = -6 (to use less hardware's potential)" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 12.13\n\n- MSE: 147.13\n\n- MAE: 6.96\n\n- R2: 0.39",
+                3:f"#### Decision Tree\n\n---\n\n{cap_tmplt}\n\n- max_leaf_nodes = 660\n\n- max_features= sqrt\n\n- max_depth= 78\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 13.00\n\n- MSE: 169.09\n\n- MAE: 7.41\n\n- R2: 0.30",
+                4:f"#### Linear Regression\n\n---\n\n{cap_tmplt}\n\n- positive = False\n\n- fit_intercept = False\n\n" +"\n\n---\n\n"+ "\n\n##### Scores:\n\n- RMSE: 13.55\n\n- MSE: 183.61\n\n- MAE: 7.76\n\n- R2: 0.24",
+            }
+            for i in range(1,5):
+                col3, col4, _ = st.columns([5.3,3,1.3])
+
+                # with open(f"./plots/p_m{i}.png", "r") as f:
+                st.markdown("---")
+                ## plots[f"p{i}"] = f.read() # to save plots in a dict
+                with col3:
+                    pass
+                    # st.components.v1.html(f.read(),height=620, width=820)
+                    st.image(f"./plots/p_m{i}_fa.png")
+                with col4:
+                    st.markdown(model_plot_caption[i])
+        
